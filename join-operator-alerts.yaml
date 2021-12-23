@@ -1,0 +1,27 @@
+## alerts join operator ###
+
+
+SecurityAlert
+| where AlertName == "Data exfiltration to an app that is not sanctioned"
+| extend UserPrincipalName = tostring(parse_json(ExtendedProperties).["user"])
+| extend Alert1Time = TimeGenerated
+| extend Alert1 = AlertName
+| extend Alert1Severity = AlertSeverity
+
+
+#### Get all the alerts with atypical travel ###
+
+SecurityAlert
+| where TimeGenerated > TimeFrame
+| where AlertName == "Atypical travel"
+| extend UserPrincipalName = tostring(parse_json(ExtendedProperties).["User Account"])
+| extend Alert2Time = TimeGenerated
+| extend Alert2 = AlertName
+| extend Alert2Severity = AlertSeverity
+| extend CurrentLocation = strcat(tostring(parse_json(tostring(parse_json(Entities)[1].Location)).CountryCode), "|", tostring(parse_json(tostring(parse_json(Entities)[1].Location)).State), "|", tostring(parse_json(tostring(parse_json(Entities)[1].Location)).City))
+| extend PreviousLocation = strcat(tostring(parse_json(tostring(parse_json(Entities)[2].Location)).CountryCode), "|", tostring(parse_json(tostring(parse_json(Entities)[2].Location)).State), "|", tostring(parse_json(tostring(parse_json(Entities)[2].Location)).City))
+| extend CurrentIPAddress = tostring(parse_json(Entities)[1].Address)
+| extend PreviousIPAddress = tostring(parse_json(Entities)[2].Address)
+
+##Project the columns to have enough data to assess the alert##
+| project UserPrincipalName, Alert1, Alert1Time, Alert1Severity, Alert2, Alert2Time, Alert2Severity, CurrentLocation, PreviousLocation, CurrentIPAddress, PreviousIPAddress

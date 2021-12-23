@@ -1,0 +1,13 @@
+// Get Sign-in logs for any Report-Only Conditional Access policies where the result = ReportOnlyFailure
+SigninLogs
+| mvexpand ConditionalAccessPolicies
+| where ConditionalAccessPolicies["result"] == "reportOnlyFailure"
+| project TimeGenerated, Identity, UserPrincipalName, AzureADApplication = AppDisplayName, ClientApplication = ClientAppUsed, ClientBrowser = DeviceDetail.browser, ClientOperatingSystem = DeviceDetail.operatingSystem, ClientIPAddress = IPAddress , ClientUserAgent = UserAgent , ConditionalAccessPolicyName = ConditionalAccessPolicies["displayName"], ConditionalAccessPolicyID = ConditionalAccessPolicies["id"]
+
+
+
+SigninLogs
+| mv-expand ConditionalAccessPolicies
+| project DisplayName = tostring(ConditionalAccessPolicies.displayName),ID = tostring(ConditionalAccessPolicies.id)
+| distinct ID,DisplayName
+| order by DisplayName asc 

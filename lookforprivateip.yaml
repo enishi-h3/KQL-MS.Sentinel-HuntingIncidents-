@@ -1,0 +1,16 @@
+DeviceNetworkInfo
+
+## This table is part of Microsoft Defender for Endpoints with Azure Sentinel. This table contains Network properties
+# of machines, including adapters, IP and MAC addresses, as well as connected networks and domains.
+##### Look-up Private ip or Mac Address ####
+
+DeviceNetworkInfo
+| where IPAddresses[0].AddressType == "Private"  // or public
+| where DeviceName == "desktop-randomame"
+
+
+// | where DefaultGateways[0] == "100.00.000.000" // for Public IP or Private ["fe80::ceab:0000:0000:0000","000.000.1.00"]
+
+// | where IPv4Dhcp == "0.0.0.000"
+
+//  | where MacAddress == "macaddress"

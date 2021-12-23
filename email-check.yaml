@@ -1,0 +1,19 @@
+EmailEvents
+| where RecipientEmailAddress == "mailaddress"
+
+| where SenderFromAddress contains "hibobmail.com"
+## attarchments ###
+
+
+EmailAttachmentInfo
+| where RecipientEmailAddress == "mailaddress"
+
+| where SenderFromAddress == ""
+
+#### if email is being put in quarentine ###
+
+
+EmailPostDeliveryEvents
+
+
+| where RecipientEmailAddress == ""

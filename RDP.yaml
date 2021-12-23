@@ -1,0 +1,21 @@
+### Rare RDP Connections ###
+
+SecurityEvent
+| where Account contains "nameaccount"
+| where LogonTypeName contains "RemoteInteractive"
+
+
+
+
+SecurityEvent
+| where (EventID == 4625 or EventID== 4624) and WorkstationName == "nameworkstation"
+| project TimeGenerated, EventID , WorkstationName,Computer, Account , LogonTypeName , IpAddress
+| order by TimeGenerated desc
+
+
+
+
+
+DeviceNetworkEvents   # This table is part of Microsoft Defender for Endpoints with Azure Sentinel.
+#This table contains Network properties of machines, including adapters, IP and MAC addresses,
+# as well as connected networks and domains. ###

@@ -1,0 +1,7 @@
+let heartbeats = (v_ComputerIP: string) {
+    Heartbeat
+    | where TimeGenerated >= ago(30d)
+    | where ComputerIP == v_ComputerIP
+    | summarize FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated) by ComputerIP, Computer
+};
+heartbeats(@'IP')

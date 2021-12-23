@@ -1,0 +1,32 @@
+
+### The let statement allows for the creating variables to be used in later statements.
+# In this example, timeOffSet and discardEventId are created and used as part of the SecurityEvent "where" clause.
+
+let timeOffset = 7d;
+let discardEventId = 4688;
+SecurityEvent
+| where TimeGenerated > ago(timeOffset*2) and TimeGenerated < ago(timeOffset)
+| where EventID != discardEventId
+
+
+
+#### Declare dynamic tables or lists
+### The let statement allows for the creation of dynamics tables or lists.
+
+
+
+let suspiciousAccounts = datatable(account: string) [
+    @"\administrator",
+    @"NT AUTHORITY\SYSTEM"
+];
+SecurityEvent 
+| where Account in (suspiciousAccounts)
+
+################
+
+
+let LowActivityAccounts =
+    SecurityEvent
+    | summarize cnt = count() by Account
+    | where cnt < 10;
+LowActivityAccounts | where Account contains "Mal"

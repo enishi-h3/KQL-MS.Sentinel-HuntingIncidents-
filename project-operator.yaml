@@ -1,0 +1,30 @@
+### The project operator will limit the size of the result set, which will increase performance
+
+SecurityEvent
+| project Computer, Account
+
+
+#####################################################
+#Operator	Description###
+# project	##Select the columns to include, rename or drop, and insert new computed columns.
+#project-away##	Select what columns from the input to exclude from the output.
+#project-rename##	Select the columns to rename in the resulting output.
+#project-reorder##	Set the column order in the resulting output.
+################################
+
+
+SecurityAlert
+| where TimeGenerated > ago(7d)
+| extend severityOrder = case (
+    AlertSeverity == "High", 3,
+    AlertSeverity == "Medium", 2,
+    AlertSeverity == "Low", 1,
+    AlertSeverity == "Informational", 0,
+    -1)
+| order by severityOrder
+| project-away severityOrder
+
+
+### What are project operators?
+
+### Project operators add, remove, or rename columns in a result set.

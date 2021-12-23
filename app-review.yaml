@@ -1,0 +1,12 @@
+###################### APP FOR REVIEW ###
+
+SecurityAlert
+| where parse_json(ExtendedProperties).["Cloud Applications"] == "Microsoft Power Query"
+
+
+
+
+SecurityAlert
+| where parse_json(ExtendedProperties).["Cloud Applications"] == "Microsoft Power Query"
+| extend Name_ = tostring(parse_json(Entities)[9].Name)
+| extend UserPrincipalName_ = tostring(parse_json(Entities)[9].UserPrincipalName)

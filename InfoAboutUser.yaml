@@ -1,0 +1,6 @@
+IdentityInfo
+| where AccountUPN == "username"
+
+
+#### This table is populated by Azure Sentinel UEBA with all your users identities
+## information. It can be used to correlate user information and insights with analytics or hunting queries.

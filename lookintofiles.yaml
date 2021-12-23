@@ -1,0 +1,14 @@
+### look into user if have created a file or rename it ####
+#This table contains information about file creation, modification, and other file system events.
+DeviceFileEvents
+| where InitiatingProcessAccountUpn contains "user"
+| where FileName contains ".exe"
+
+
+
+
+
+DeviceFileEvents
+//| where InitiatingProcessAccountUpn contains "user"
+| where FileName contains "excel"
+| project TimeGenerated, FileName, ActionType, InitiatingProcessAccountUpn, DeviceName, FolderPath, FileSize, InitiatingProcessCommandLine, InitiatingProcessFileName, InitiatingProcessFolderPath

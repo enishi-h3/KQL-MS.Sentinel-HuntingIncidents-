@@ -1,0 +1,43 @@
+find DeviceDetail contains "devicename"
+| summarize count() by Identity
+
+DeviceInfo
+| where DeviceName contains "devicename"
+
+
+find DeviceDetail contains "device"
+
+
+find DeviceDetail contains "ios"
+| where pack_.AlternateSignInName == "user"
+
+
+### look into user if have created a file or rename it ####
+#This table contains information about file creation, modification, and other file system events.
+DeviceFileEvents
+| where InitiatingProcessAccountUpn contains "user"
+| where FileName contains ".exe"
+
+
+####### device events table contains information about various event types,
+#including events triggered by security controls, such as Microsoft Defender Antivirus and exploit protection
+
+DeviceEvents
+| where InitiatingProcessAccountUpn == "account"
+
+
+DeviceImageLoadEvents	# This table contains information about DLL loading events.
+
+DeviceInfo	# This table contains information about devices in the organization, including their OS version, active users, and computer name.
+DeviceLogonEvents	#This table contains information about user logons and other authentication events.
+DeviceNetworkEvents	#This table contains information about network connections and related events.
+
+DeviceNetworkEvents
+| where InitiatingProcessCommandLine contains "svchost.exe"
+| where DeviceName contains "devicename"
+| project TimeGenerated, InitiatingProcessIntegrityLevel, ActionType, InitiatingProcessAccountUpn, DeviceName,LocalIP,LocalIPType, LocalPort, RemoteIP, RemoteIPType, RemotePort, RemoteUrl,InitiatingProcessCommandLine, InitiatingProcessFileName, InitiatingProcessFolderPath
+
+
+DeviceNetworkInfo	#This table contains information about networking configuration of devices, including network adapters, IP and MAC addresses, and connected networks or domains.
+DeviceProcessEvents	#This table contains information about process creation and related events.
+DeviceRegistryEvents	#This table contains information about the creation and modification of registry entries.

@@ -1,0 +1,9 @@
+SigninLogs
+| search "MFA"
+| where UserPrincipalName == "user"
+| extend errorCode_ = tostring(Status.errorCode)
+| where errorCode_ !=0
+| where  ConditionalAccessStatus =="failure"
+| extend additionalDetails_ = tostring(Status.additionalDetails)
+| extend failureReason_ = tostring(Status.failureReason)
+| summarize  make_set(errorCode_) , make_set(ConditionalAccessStatus) by  CorrelationId , TimeGenerated, additionalDetails_, failureReason_, UserPrincipalName

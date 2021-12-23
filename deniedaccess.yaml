@@ -1,0 +1,6 @@
+// Count of denied access from IP Security Audit Logs by resource in the last 7 days
+// Gets count for logs with denied access result from IP Security Audit Logs in the last 7 days by Resource, CsHost, CIp, and Details.
+AppServiceIPSecAuditLogs
+| where TimeGenerated > ago(7d)
+| where Result == "Denied"
+| summarize count() by  _ResourceId, CsHost, CIp, Details

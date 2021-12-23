@@ -1,0 +1,21 @@
+OfficeActivity
+| where UserId == "<UPN>"
+| distinct TimeGenerated, Operation, UserId, ClientIP, EventSource, ItemType, OfficeObjectId, Site_Url, SourceRelativeUrl
+
+Optional can be used time generated query if needed:
+| where TimeGenerated between (datetime('YYYY-MM-DDTHH:MM') .. datetime('YYYY-MM-DDTHH:MM'))
+
+
+
+
+
+OfficeActivity
+| where UserId == "user"
+| where Operation in ("FileModified" , "FileAccessed")
+| distinct TimeGenerated, Operation, UserId, ClientIP, EventSource, ItemType, OfficeObjectId, Site_Url, SourceRelativeUrl
+
+
+OfficeActivity
+| where UserId == "userm"
+| where UserAgent == "Exchange/15.20.4713.26/Outlook"
+| distinct TimeGenerated, Operation, UserAgent, UserId, ClientIP, EventSource, ItemType, OfficeObjectId, Site_Url, SourceRelativeUrl, SourceSystem, SourceFileName

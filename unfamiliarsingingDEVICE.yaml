@@ -1,0 +1,25 @@
+SecurityAlert
+| where AlertName contains "Unfamiliar"
+| where parse_json(Entities)[1].UserAgent contains "Mac"
+| project TimeGenerated, AlertName, Description, AlertSeverity, AlertType, CompromisedEntity, ExtendedProperties, Entities
+| extend UserAgent_ = tostring(parse_json(Entities)[1].UserAgent)
+
+
+
+
+
+SecurityAlert
+| where TimeGenerated <= ago(3m)
+| where AlertName contains "Unfamiliar"
+| where parse_json(Entities)[1].UserAgent contains "iPhone"
+| project TimeGenerated, AlertName, Description, AlertSeverity, AlertType, CompromisedEntity, ExtendedProperties, Entities
+| extend UserAgent_ = tostring(parse_json(Entities)[1].UserAgent)
+
+
+SecurityAlert
+| where AlertName contains "Unfamiliar"
+| where parse_json(Entities)[1].UserAgent contains "Windows"
+| where parse_json(ExtendedProperties).["User Account"] == "user"
+| where parse_json(ExtendedProperties).["Client IP Address"] == "IP"
+| project TimeGenerated, AlertName, Description, AlertSeverity, AlertType, CompromisedEntity, ExtendedProperties, Entities
+| extend UserAgent_ = tostring(parse_json(Entities)[1].UserAgent)

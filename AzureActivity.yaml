@@ -1,0 +1,14 @@
+AzureActivity # Entries from the Azure Activity log that provides insight into any subscription-level or management group level events that have occurred in Azure.
+
+
+
+AzureDiagnostics	#Stores resource logs for Azure services that use Azure Diagnostics mode. Resource logs describe the internal operation of Azure resources.
+
+
+
+
+// Display Activity log Administrative events
+// Displays Activity log for Administrative category.
+AzureActivity
+| where CategoryValue == "Administrative"
+| order by TimeGenerated desc

@@ -1,0 +1,7 @@
+
+
+
+dependencies
+| join kind = leftouter
+  (exceptions)
+on $left.operation_Id == $right.operation_Id

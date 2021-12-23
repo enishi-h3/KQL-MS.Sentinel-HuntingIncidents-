@@ -1,0 +1,46 @@
+SigninLogs
+| where TimeGenerated >= ago(5d)
+| where ResultType == "50074"
+
+
+SigninLogs
+| where TimeGenerated >= ago(2d)
+| where UserPrincipalName contains "user" and IPAddress contains "ip"
+| project TimeGenerated, ResultType, ResultDescription, IPAddress, DeviceDetail, AppDisplayName, AuthenticationDetails, ConditionalAccessStatus, ConditionalAccessPolicies
+
+
+SigninLogs
+| where TimeGenerated >= ago(2d)
+| where UserPrincipalName contains "user"
+| project TimeGenerated, AppDisplayName, UserPrincipalName, IPAddress, DeviceDetail, MfaDetail, ConditionalAccessStatus, ConditionalAccessPolicies
+
+## additionalDetails ##
+SigninLogs
+| where TimeGenerated >= ago(2d)
+| where UserPrincipalName contains "user"
+| project TimeGenerated, AppDisplayName, UserPrincipalName, IPAddress, DeviceDetail, MfaDetail, ConditionalAccessStatus, Status, ConditionalAccessPolicies
+| extend additionalDetails_ = tostring(Status.additionalDetails)
+
+
+SigninLogs
+| where IPAddress in ("IP", "IP")
+| project TimeGenerated, AppDisplayName, UserPrincipalName, IPAddress, MfaDetail, ConditionalAccessStatus, LocationDetails, DeviceDetail, ConditionalAccessPolicies, Status
+| extend additionalDetails_ = tostring(Status.additionalDetails)
+
+AADNonInteractiveUserSignInLogs
+//| where UserPrincipalName contains "upn"
+| where IPAddress contains "IP"
+
+
+
+// Satisfied MFA //
+union SigninLogs, AADNonInteractiveUserSignInLogs
+| where UserPrincipalName contains "user" and Status_dynamic.additionalDetails == "MFA requirement satisfied by claim in the token"
+| project TimeGenerated, Status_dynamic, DeviceDetail_dynamic, UserPrincipalName, AppDisplayName, ClientAppUsed, IPAddress, Location, Type, TokenIssuerType, ConditionalAccessStatus, AuthenticationRequirement, AuthenticationProcessingDetails
+
+
+// Failed MFA //
+
+union SigninLogs, AADNonInteractiveUserSignInLogs
+| where UserPrincipalName contains "user" and Status_dynamic.failureReason == "User did not pass the MFA challenge."
+| project TimeGenerated, Status_dynamic, DeviceDetail_dynamic, UserPrincipalName, AppDisplayName, ClientAppUsed, IPAddress, Location, Type, TokenIssuerType, ConditionalAccessStatus, AuthenticationRequirement, AuthenticationProcessingDetails
