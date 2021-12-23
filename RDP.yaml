@@ -1,5 +1,16 @@
 ### Rare RDP Connections ###
 
+
+DeviceNetworkEvents
+| where RemotePort == "3389"
+| where LocalIP contains "PrivateIP"
+| project TimeGenerated, InitiatingProcessIntegrityLevel, ActionType, InitiatingProcessAccountUpn, DeviceName,LocalIP,LocalIPType, LocalPort, RemoteIP, RemoteIPType, RemotePort, RemoteUrl,InitiatingProcessCommandLine, InitiatingProcessFileName, InitiatingProcessFolderPath
+
+
+
+
+
+
 SecurityEvent
 | where Account contains "nameaccount"
 | where LogonTypeName contains "RemoteInteractive"
