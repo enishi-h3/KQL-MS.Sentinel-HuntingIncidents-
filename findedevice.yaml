@@ -19,6 +19,17 @@ DeviceFileEvents
 | where FileName contains ".exe"
 
 
+DeviceFileEvents
+| where DeviceName == "devicename"
+| where FileName contains ".exe"  // name of the file
+| project TimeGenerated, InitiatingProcessAccountUpn, InitiatingProcessAccountName, FileName, ActionType, DeviceName, InitiatingProcessAccountDomain,FileSize, InitiatingProcessCommandLine, InitiatingProcessFolderPath, InitiatingProcessSHA256
+// adding join another table you can get the source IP
+| join kind = inner (
+     DeviceInfo
+     | where DeviceName == "devicename" // you have to add the exact device as the table DeviceFileEvents
+     | project PublicIP, IsAzureADJoined, OSPlatform, DeviceName
+) on DeviceName
+
 ####### device events table contains information about various event types,
 #including events triggered by security controls, such as Microsoft Defender Antivirus and exploit protection
 
