@@ -1,0 +1,12 @@
+AADNonInteractiveUserSignInLogs
+| where parse_json(DeviceDetail).operatingSystem contains "ios"
+| where  ConditionalAccessStatus == "failure"
+| summarize iOSFails=count() by  UserPrincipalName, ConditionalAccessStatus, IPAddress , Location
+| project  UserPrincipalName, iOSFails, IPAddress , Location, ConditionalAccessStatus
+| join kind = inner (
+AADNonInteractiveUserSignInLogs
+| where parse_json(DeviceDetail).operatingSystem contains "android"
+| where  ConditionalAccessStatus == "failure"
+| summarize AndroidFails=count() by UserPrincipalName, ConditionalAccessStatus, IPAddress, Location
+| project  UserPrincipalName, AndroidFails, IPAddress, Location, ConditionalAccessStatus
+) on ConditionalAccessStatus 
